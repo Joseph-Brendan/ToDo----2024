@@ -24,6 +24,7 @@ function collectTodo(event){
     // Send todo object literals to local storage
     localStorage.setItem("todos", JSON.stringify(todoItemsArray))
     form.reset()
+    fetchTodoItems()
     showTodosOnUI()
 }
 
