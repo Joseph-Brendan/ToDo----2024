@@ -86,6 +86,7 @@ function showTodosOnUI(){
             rightSideDiv.append(editIcon, deleteicon)
             todoItemDiv.append(leftSideDiv, rightSideDiv)
             todoItemContainer.append(todoItemDiv)
+            todoText.style.textDecoration = "line-through"
         }
     })
 }
@@ -100,4 +101,26 @@ function targetTodoItem(event){
     let todoID = Number(grandParentElement.id)
     let clickedAction = targetOfUser.dataset.action
 
+    if(clickedAction === "check"){
+        checkATodoItem(todoID)
+    }
+
+}
+
+function checkATodoItem(ID){
+    todoItemsArray = todoItemsArray.map(function(todoObject, index){
+        if(index === ID){
+            return{
+                todoItemEntered : todoObject.todoItemEntered,
+                completed : !todoObject.completed
+            }
+        }else{
+            return{
+                todoItemEntered : todoObject.todoItemEntered,
+                completed : todoObject.completed
+            }
+        }
+    })
+
+    showTodosOnUI()
 }
