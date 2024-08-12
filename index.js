@@ -4,6 +4,7 @@ let todoItemContainer = document.getElementById("todo-item-container")
 
 // Array collecting all todo Item Object Literals
 let todoItemsArray = []
+let editingSignal = -1
 
 // Collecting todo from todo input field
 form.addEventListener("submit", collectTodo)
@@ -13,6 +14,20 @@ function collectTodo(event){
     
     if(todoInputValue.length === 0){
         alert("Enter A Todo Item")
+    }else if(editingSignal >= 0){
+        todoItemsArray = todoItemsArray.map(function(todoObject, index){
+            if(editingSignal === index){
+                return{
+                    todoItemEntered : todoInputValue,
+                    completed : todoObject.completed
+                }
+            }else{
+                return{
+                    todoItemEntered : todoObject.todoItemEntered,
+                    completed : todoObject.completed
+                }
+            }
+        })
     }else{
         const todoObjectLiteral = {
             todoItemEntered : todoInputValue,
@@ -103,6 +118,10 @@ function targetTodoItem(event){
 
     if(clickedAction === "check"){
         checkATodoItem(todoID)
+    }else if(clickedAction === "edit"){
+        editATodoItem(todoID)
+    }else if(clickedAction === "delete"){
+        deleteATodoItem(todoID)
     }
 
 }
@@ -122,5 +141,19 @@ function checkATodoItem(ID){
         }
     })
 
+    showTodosOnUI()
+}
+
+
+function editATodoItem(ID){
+    todoInput.value = todoItemsArray[ID].todoItemEntered
+    editingSignal = ID
+}
+
+
+function deleteATodoItem(ID){
+    todoItemsArray = todoItemsArray.filter(function(item, index){
+        return index !== ID
+    })
     showTodosOnUI()
 }
